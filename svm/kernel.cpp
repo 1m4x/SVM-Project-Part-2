@@ -234,12 +234,10 @@ namespace svm
                 std::cerr << "Kernel: failed to open the program file." << std::endl;
                 } else {
                 Memory::ram_type ops;
-
                 input_stream.seekg(0, std::ios::end);
                 auto file_size = input_stream.tellg();
                 input_stream.seekg(0, std::ios::beg);
                 ops.resize(static_cast<Memory::ram_size_type>(file_size) / 4);
-
                 input_stream.read(reinterpret_cast<char *>(&ops[0]), file_size);
 
                 if (input_stream.bad()) {
@@ -250,7 +248,6 @@ namespace svm
                         std::cerr << "Kernel: failed to allocate memory." << std::endl;
                         } else {
                         std::copy(ops.begin(), ops.end(), (board.memory.ram.begin() + new_memory_position));
-
                         Process process(_last_issued_process_id++, new_memory_position,
                         new_memory_position + ops.size());
                     }
@@ -259,10 +256,9 @@ namespace svm
         }
     }
 
-    Memory::vmem_size_type Kernel::VirtualMemoryToPhysical(Memory::ram_size_type previous_index){
+        Memory::vmem_size_type Kernel::VirtualMemoryToPhysical(Memory::ram_size_type previous_index){
         Memory::page_index_offset_pair_type page_index_offset = board.memory.GetPageIndexAndOffsetForVirtualAddress(previous_index);
         Memory::page_entry_type page = board.memory.page_table->at(page_index_offset.first);
-
         Memory::page_entry_type frame = board.memory.AcquireFrame();
 
         if (page == Memory::INVALID_PAGE){
@@ -280,7 +276,6 @@ namespace svm
         Memory::ram_size_type prev_index = _free_physical_memory_index;
         Memory::ram_size_type current_index;
 
-
         for(Memory::ram_size_type next_free_index = board.memory.ram[VirtualMemoryToPhysical(prev_index)]; ;  prev_index = next_free_index, next_free_index = board.memory.ram[next_free_index])
         {
             Memory::ram_size_type size = board.memory.ram[VirtualMemoryToPhysical(next_free_index+1)];
@@ -294,20 +289,16 @@ namespace svm
                 {
                     board.memory.ram[VirtualMemoryToPhysical(next_free_index + 1)] -= units + 2;
                     next_free_index +=  board.memory.ram[VirtualMemoryToPhysical(next_free_index + 1)];
-
                     board.memory.ram[VirtualMemoryToPhysical(next_free_index + 1)] = units;
                 }
                 _free_physical_memory_index = prev_index;
-
                 return next_free_index + 2;
-
             }
             if(next_free_index == _free_physical_memory_index)
             {
                 return NULL;
             }
         }
-
         return -1;
     }
 
@@ -315,17 +306,13 @@ namespace svm
     {
         Memory::ram_size_type previous_free_block_index = _free_physical_memory_index;
         Memory::ram_size_type current_block_index = physical_memory_index - 2;
-
         for(; !(current_block_index > previous_free_block_index && current_block_index < board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)]);
         previous_free_block_index =  board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)])    {
-
             if( previous_free_block_index >= board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)] &&
             ((current_block_index > previous_free_block_index || current_block_index < board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)]))){
                 break;
             }
-
         }
-
         if(current_block_index + board.memory.ram[VirtualMemoryToPhysical(current_block_index + 1)] == board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)])
         {
             board.memory.ram[VirtualMemoryToPhysical(current_block_index)] == board.memory.ram[board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)]];
@@ -335,7 +322,6 @@ namespace svm
         {
             board.memory.ram[VirtualMemoryToPhysical(current_block_index)] = board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)];
         }
-
         if(previous_free_block_index + board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index + 1)] == current_block_index)
         {
             board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index + 1)] += board.memory.ram[VirtualMemoryToPhysical(current_block_index + 1)];
@@ -345,7 +331,6 @@ namespace svm
         {
             board.memory.ram[VirtualMemoryToPhysical(previous_free_block_index)] = current_block_index;
         }
-
         _free_physical_memory_index = previous_free_block_index;
     }
 }

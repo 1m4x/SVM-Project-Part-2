@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/svmasm.dir/svmasm.cpp.o  -o svmasm -rdynamic 

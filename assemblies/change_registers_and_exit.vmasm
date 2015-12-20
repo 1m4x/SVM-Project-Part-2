@@ -1,0 +1,4 @@
+mov a 42
+mov a 1
+mov b 0
+int 1

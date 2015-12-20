@@ -1,0 +1,3 @@
+/home/evilmind/Desktop/SVM/svm/assemblies/CMakeFiles/assemblies.dir
+/home/evilmind/Desktop/SVM/svm/svm/CMakeFiles/svm.dir
+/home/evilmind/Desktop/SVM/svm/svmasm/CMakeFiles/svmasm.dir

@@ -43,9 +43,17 @@ namespace svm
         };
         //Process Management
         std::for_each(executables_paths.begin(), executables_paths.end(), [&](const std::string &path) {
-	            CreateProcess(path);
+	            CreateProcess(&path);
 	        });
 
+          if (!processes.empty()) {
+          			std::cout << "Kernel: set process: " << processes[_current_process_index].id << " for execution." << std::endl;
+
+          			board.cpu.registers = processes[_current_process_index].registers;
+          			board.memory.page_table = processes[_current_process_index].page_table;
+
+          			processes[_current_process_index].state = Process::Running;
+          		}
         if (scheduler == FirstComeFirstServed) {
             board.pic.isr_0 = [&]() {
                 // ToDo: Process the timer interrupt for the FCFS

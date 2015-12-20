@@ -61,7 +61,16 @@ namespace svm
 
             board.pic.isr_3 = [&]() {
                 // ToDo: Process the first software interrupt for the FCFS
-                // Unload the current process
+          			// Unload the current process
+        				std::cout << "Number of Processes left = " << processes.size() << std::endl;
+        				processes.pop_front();
+        				if (processes.empty()) {
+        					board.Stop();
+        				}
+        				else {
+        					board.cpu.registers = processes[0].registers;
+        					processes[0].state = Process::States::Running;
+        				}
             };
             } else if (scheduler == ShortestJob) {
             board.pic.isr_0 = [&]() {
@@ -72,8 +81,18 @@ namespace svm
             board.pic.isr_3 = [&]() {
                 // ToDo: Process the first software interrupt for the Shortest
                 //  Job scheduler
-
                 // Unload the current process
+        				std::cout << "Number of Processes left = " << processes.size() << std::endl;
+
+        				processes.pop_front();
+
+        				if (processes.empty()) {
+        					board.Stop();
+        				}
+        				else {
+        					board.cpu.registers = processes[0].registers;
+        					processes[0].state = Process::States::Running;
+        				}
             };
             } else if (scheduler == RoundRobin) {
             board.pic.isr_0 = [&]() {
@@ -170,10 +189,29 @@ namespace svm
             };
 
             board.pic.isr_3 = [&]() {
-                // ToDo: Process the first software interrupt for the Priority
-                //  Queue scheduler
-
-                // Unload the current process
+              // ToDo: Process the first software interrupt for the Priority
+              //  Queue scheduler
+              // Unload the current process
+              std::cout << "Number of Processes left = " << processes.size() << std::endl;
+              if (board.cpu.registers.a == 1) {
+                priorities.pop();
+                if (priorities.empty()) {
+                  board.Stop();
+                }
+                else {
+                  Process t = priorities.top();
+                  board.cpu.registers = t.registers;
+                  priorities.pop();
+                  t.state = Process::States::Running;
+                  priorities.push(t);
+                }
+              } else if (board.cpu.registers.a == 2) {
+                Process t = priorities.top();
+                priorities.pop();
+                t.priority = board.cpu.registers.b;
+                t.updateCycles();
+                priorities.push(t);
+              }
             };
         }
 

@@ -29,8 +29,13 @@ namespace svm
                              MOVB_OPCODE = 0x11,
                              MOVC_OPCODE = 0x12,
                              JMP_OPCODE  = 0x20,
-                             INT_OPCODE  = 0x30;
-
+                             INT_OPCODE  = 0x30,
+                             LDA_BASE_OPCODE=0x20,
+                             LDB_BASE_OPCODE=0x21,
+                             LDC_BASE_OPCODE=0x22,
+                             STA_BASE_OPCODE=0x30,
+                             STB_BASE_OPCODE=0x31,
+                             STC_BASE_OPCODE=0x32;
             Registers registers; // Current state of the CPU
 
             CPU(Memory &memory, PIC &pic);

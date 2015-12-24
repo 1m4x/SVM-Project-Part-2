@@ -10,7 +10,8 @@ namespace svm
 {
     Kernel::Kernel(
     Scheduler scheduler,
-    std::vector<Memory::ram_type> executables_paths
+    //std::vector<Memory::ram_type> executables_paths
+    std::vector<std::string> executables_paths
     )
     : board(),
     processes(),
@@ -43,7 +44,7 @@ namespace svm
         };
         //Process Management
         std::for_each(executables_paths.begin(), executables_paths.end(), [&](const std::string &path) {
-            CreateProcess(&path);
+            CreateProcess(path);
         });
 
         if (!processes.empty()) {

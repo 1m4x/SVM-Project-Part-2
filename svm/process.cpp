@@ -23,4 +23,7 @@ namespace svm
     bool Process::operator<(const Process &anotherProcess) const {
         return priority < anotherProcess.priority;
     }
+    void Process::updateCycles() {
+		_DYNAMIC_MAX_CYCLES_BEFORE_PREEMPTION = priority * 100 + 100;
+	}
 }

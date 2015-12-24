@@ -35,7 +35,8 @@ namespace svm
 
         Kernel(
           Scheduler scheduler,
-          std::vector<Memory::ram_type> executables_paths
+          //std::vector<Memory::ram_type> executables_paths
+          std::vector<std::string> executables_paths
         );
         virtual ~Kernel();
 

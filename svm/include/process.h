@@ -24,7 +24,6 @@ namespace svm
         States state;
 
         process_priority_type priority;
-
         Memory::ram_size_type memory_start_position;
         Memory::ram_size_type memory_end_position;
 
@@ -36,7 +35,7 @@ namespace svm
                                     Memory::ram_size_type memory_end_position);
 
         virtual ~Process();
-
+        void updateCycles();
         bool operator<(const Process &anotherProcess) const;
     };
 }

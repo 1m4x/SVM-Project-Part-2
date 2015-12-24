@@ -19,7 +19,7 @@ namespace svm
 		return new page_table_type(RAM_SIZE / PAGE_SIZE);
     }
 
-    Memory::page_index_offset_pair_type Memory::GetPageIndexAndOffsetForVirtualAddress(vmem_size_type address)
+    Memory::page_index_offset_pair_type Memory::PageOffsetForVirtual(vmem_size_type address)
     {
         page_index_offset_pair_type result = std::make_pair((page_table_size_type) -1, (ram_size_type) -1);
 

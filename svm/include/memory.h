@@ -34,7 +34,7 @@ namespace svm
 
         static page_table_type* CreateEmptyPageTable();
 
-        page_index_offset_pair_type GetPageIndexAndOffsetForVirtualAddress(vmem_size_type address);
+        page_index_offset_pair_type PageOffsetForVirtual(vmem_size_type address);
 
         page_entry_type AcquireFrame();
         void ReleaseFrame(page_entry_type page);
